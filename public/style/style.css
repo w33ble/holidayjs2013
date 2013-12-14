@@ -12,6 +12,14 @@ body {
 	margin-bottom: 2%;
 }
 
+.grid {
+	height: 100%;
+	width: 100%;
+	background-image: url(/img/grid.png);
+	background-size: 600px 600px;
+	background-repeat: no-repeat;
+}
+
 .grid img { position: absolute; }
 
 .row0 { top: 0; }
