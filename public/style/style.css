@@ -1,5 +1,9 @@
 body {
+	width: 920px;
 	background-color: azure;
+	margin: 0;
+	padding: 0;
+	font-family: Arial;
 }
 
 h1, p {
@@ -12,23 +16,22 @@ h1, p {
 	float: left;
 	width: 150px;
 	height: 600px;
-	margin-left: 2%;
 	background-color: white;
 	border: 3px solid white;
 }
 
 #playerOne {
 	background-image: url(/img/Xmas_Raptor_by_Mystra_Inc.jpg);
-	background-size: 550px;
+	background-size: 483px;
 	background-repeat: no-repeat;
-	background-position: 30% 30%;
+	background-position: 25% 99%;
 }
 
 #playerTwo {
 	background-image: url(/img/humbug.jpg);
-	background-size: 500px;
+	background-size: 450px;
 	background-repeat: no-repeat;
-	background-position: 30% 15%;
+	background-position: 50% 20%;
 }
 
 #playerOne.active,
@@ -49,7 +52,14 @@ h1, p {
 	float: left;
 	width: 600px;
 	height: 600px;
-	margin-left: 2%;
+}
+
+.score {
+	margin-top: 63px;
+	padding: 0 1em;
+	font-weight: bold;
+	background-color: white;
+	border: 1px solid gray;
 }
 
 #grid {
