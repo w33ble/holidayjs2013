@@ -1,3 +1,35 @@
 body {
 	background-color: azure;
 }
+
+#playerOne, #playerTwo {
+	position: relative;
+	background: white;
+	float: left;
+	width: 600px;
+	height: 600px;
+	margin-left: 2%;
+	margin-bottom: 2%;
+}
+
+.grid img { position: absolute; }
+
+.row0 { top: 0; }
+.row1 { top: 66px; }
+.row2 { top: 132px; }
+.row3 { top: 198px; }
+.row4 { top: 264px; }
+.row5 { top: 330px; }
+.row6 { top: 396px; }
+.row7 { top: 462px; }
+.row8 { top: 528px; }
+
+.col0 { left: 0; }
+.col1 { left: 66px; }
+.col2 { left: 132px; }
+.col3 { left: 198px; }
+.col4 { left: 264px; }
+.col5 { left: 330px; }
+.col6 { left: 396px; }
+.col7 { left: 462px; }
+.col8 { left: 528px; }
