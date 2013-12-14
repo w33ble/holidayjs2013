@@ -43,7 +43,9 @@ body {
 
 #grid img { position: absolute; }
 
-.row0 { top: 0; }
+.piece { width: 64px; height: 64px; background-size: cover; position: absolute; }
+
+.row0 { top: 0;}
 .row1 { top: 66px; }
 .row2 { top: 132px; }
 .row3 { top: 198px; }
