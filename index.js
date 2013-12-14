@@ -3,7 +3,9 @@ var static = require('node-static');
 //
 // Create a node-static server instance to serve the './public' folder
 //
+
 var file = new static.Server('./public');
+var listenPort = process.env.PORT || '8080';
 
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
@@ -12,4 +14,4 @@ require('http').createServer(function (request, response) {
         //
         file.serve(request, response);
     }).resume();
-}).listen(8080);
+}).listen(listenPort);
