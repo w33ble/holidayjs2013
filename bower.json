@@ -18,6 +18,7 @@
     "backbone": "~1.1.0",
     "lodash": "~2.4.1",
     "jquery": "1.10",
-    "PathFinding.js": "*"
+    "PathFinding.js": "*",
+    "backfire": "~0.3.0"
   }
 }
