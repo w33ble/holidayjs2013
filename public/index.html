@@ -6,13 +6,21 @@
 	<link rel="stylesheet" href="style/style.css" />
 </head>
 <body>
+<p class="turnIndicator"><span id="playerName">Dino</span>'s Turn!</p>
+
 	<h1>PresentQuest®</h1>
 
-	<div id="playerOne">&nbsp;</div>
+	<div id="playerOne" class="active">
+		<div class="score">Score:<span class="scoreNumber">0</span> </div>
+	</div>
+
 	<div id="board">
 		<div id="grid"></div>
 	</div>
-	<div id="playerTwo">&nbsp;</div>
+
+	<div id="playerTwo">
+		<div class="score">Score:<span class="scoreNumber">0</span> </div>
+	</div>
 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/lodash/dist/lodash.underscore.js"></script>

@@ -2,12 +2,19 @@ body {
 	background-color: azure;
 }
 
+h1, p {
+	padding: 0;
+	margin: 0;
+	line-height: 1em;
+}
+
 #playerOne, #playerTwo {
 	float: left;
-	width: 300px;
+	width: 150px;
 	height: 600px;
 	margin-left: 2%;
 	background-color: white;
+	border: 3px solid white;
 }
 
 #playerOne {
@@ -22,6 +29,18 @@ body {
 	background-size: 500px;
 	background-repeat: no-repeat;
 	background-position: 30% 15%;
+}
+
+#playerOne.active,
+#playerTwo.active{
+	border: 3px solid red;
+}
+
+.turnIndicator {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 200%;
 }
 
 #board {
