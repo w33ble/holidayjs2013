@@ -2,15 +2,15 @@ App.Piece = Backbone.Model.extend({
   packages: [
     {
       name: 'blue',
-      img: 'img/package-blue.png'
+      img: 'img/gift-icon1.png'
     },
     {
       name: 'red',
-      img: 'img/package-red.png'
+      img: 'img/gift-icon2.png'
     },
     {
       name: 'yellow',
-      img: 'img/package-yellow.png'
+      img: 'img/gift-icon3.png'
     }
   ],
 

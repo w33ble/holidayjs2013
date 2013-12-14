@@ -1,8 +1,8 @@
 App.AppView = Backbone.View.extend({
   initialize: function() {
-    var Pack = new App.Piece();
-    var pack = new App.PieceView({model: Pack});
+    var piece = new App.Piece();
+    var pieceView = new App.PieceView({model: piece});
   }
 });
 
-var app = new App.AppView;
+var app = new App.AppView();
