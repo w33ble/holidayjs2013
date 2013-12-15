@@ -11,6 +11,10 @@ App.Piece = Backbone.Model.extend({
     {
       name: 'yellow',
       img: 'img/gift-icon3.png'
+    },
+    {
+      name: 'snowman',
+      img: 'img/gift-icon4.png'
     }
   ],
 
