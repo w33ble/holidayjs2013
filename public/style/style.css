@@ -72,6 +72,8 @@ h1, p {
 
 #grid img { position: absolute; }
 
+.piece { width: 64px; height: 64px; background-size: cover; position: absolute; }
+
 .row0 { top: 11px; }
 .row1 { top: 80px; }
 .row2 { top: 156px; }
