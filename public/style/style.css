@@ -1,6 +1,6 @@
 body {
 	width: 920px;
-	background-color: azure;
+	background-color: rgb(226, 218, 213);
 	margin: 0;
 	padding: 0;
 	font-family: Arial;
@@ -10,6 +10,11 @@ h1, p {
 	padding: 0;
 	margin: 0;
 	line-height: 1em;
+}
+
+.tagline {
+	font-size: 40%;
+	font-style: italic;
 }
 
 #playerOne, #playerTwo {
@@ -47,8 +52,9 @@ h1, p {
 }
 
 #board {
+	margin-top: 3px;
 	position: relative;
-	background: white;
+	background-color: rgb(53, 48, 177);
 	float: left;
 	width: 600px;
 	height: 600px;
