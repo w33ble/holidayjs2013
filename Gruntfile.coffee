@@ -6,7 +6,12 @@ module.exports = (grunt) ->
       options:
         separator: ';'
       backbone:
-        src: ['public/js/App/**/*.js']
+        src: [
+          # order matters, or things don't exist when looked for
+          'public/js/App/models/*.js'
+          'public/js/App/collections/*.js'
+          'public/js/App/views/*.js'
+        ]
         dest: 'public/js/App.js'
 
     watch:
