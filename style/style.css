@@ -1,0 +1,99 @@
+body {
+	width: 920px;
+	background-color: rgb(226, 218, 213);
+	margin: 0;
+	padding: 0;
+	font-family: Arial;
+}
+
+h1, p {
+	padding: 0;
+	margin: 0;
+	line-height: 1em;
+}
+
+.tagline {
+	font-size: 40%;
+	font-style: italic;
+}
+
+#playerOne, #playerTwo {
+	float: left;
+	width: 150px;
+	height: 600px;
+	background-color: white;
+	border: 3px solid white;
+}
+
+#playerOne {
+	background-image: url(/img/Xmas_Raptor_by_Mystra_Inc.jpg);
+	background-size: 483px;
+	background-repeat: no-repeat;
+	background-position: 25% 99%;
+}
+
+#playerTwo {
+	background-image: url(/img/humbug.jpg);
+	background-size: 450px;
+	background-repeat: no-repeat;
+	background-position: 50% 20%;
+}
+
+#playerOne.active,
+#playerTwo.active{
+	border: 3px solid red;
+}
+
+.turnIndicator {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 200%;
+}
+
+#board {
+	margin-top: 3px;
+	position: relative;
+	background-color: rgb(53, 48, 177);
+	float: left;
+	width: 600px;
+	height: 600px;
+}
+
+.score {
+	margin-top: 63px;
+	padding: 0 1em;
+	font-weight: bold;
+	background-color: white;
+	border: 1px solid gray;
+}
+
+#grid {
+	height: 100%;
+	width: 100%;
+	background-image: url(/img/grid.png);
+	background-size: 600px 600px;
+	background-repeat: no-repeat;
+}
+
+#grid img { position: absolute; }
+
+.piece { width: 64px; height: 64px; background-size: cover; position: absolute; }
+
+.row0 { top: 11px; }
+.row1 { top: 80px; }
+.row2 { top: 156px; }
+.row3 { top: 230px; }
+.row4 { top: 303px; }
+.row5 { top: 378px; }
+.row6 { top: 452px; }
+.row7 { top: 525px; }
+
+.col0 { left: 11px; }
+.col1 { left: 80px; }
+.col2 { left: 156px; }
+.col3 { left: 230px; }
+.col4 { left: 303px; }
+.col5 { left: 378px; }
+.col6 { left: 452px; }
+.col7 { left: 525px; }
