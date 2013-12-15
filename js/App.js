@@ -1,12 +1,4 @@
-App.Pieces = Backbone.Firebase.Collection.extend({
-  model: App.Piece,
-  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
-  initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPiece);
-  }
-});;App.Piece = Backbone.Model.extend({
+App.Piece = Backbone.Model.extend({
   packages: [
     {
       name: 'blue',
@@ -26,25 +18,46 @@ App.Pieces = Backbone.Firebase.Collection.extend({
     }
   ],
 
+  events: {
+    'click': 'handleClick'
+  },
+
   initialize: function() {
     // choose random package
     var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
     this.set('name', pack.name);
     this.set('img', pack.img);
+  },
+
+  handleClick: function(e) {
+    App.Vent.trigger('piece:click', this);
   }
 
 });
-;App.PieceView = Backbone.View.extend({
+;App.Pieces = Backbone.Firebase.Collection.extend({
+  model: App.Piece,
+  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
+  initialize: function() {
+    var uuid4       = UUIDjs.create();
+    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
+    // this.listenTo('add', this, initPiece);
+  }
+});;App.PieceView = Backbone.View.extend({
   className: 'piece',
 
+  events: {
+    'click': 'swapHandler'
+  },
+
   initialize: function() {
+    this.listenTo(this.model, 'change', this.movePiece);
   },
 
   setClasses: function() {
-    for(var i=0; i++; i<this.model.maxWidth) {
+    for(var i=0; i<this.model.get('maxWidth'); i++) {
       this.$el.removeClass('row'+i);
     }
-    for(var i=0; i++; i<this.model.maxHeight) {
+    for(var i=0; i<this.model.get('maxHeight'); i++) {
       this.$el.removeClass('col'+i);
     }
     this.$el.addClass('row' + this.model.get('lat'));
@@ -54,9 +67,25 @@ App.Pieces = Backbone.Firebase.Collection.extend({
   render: function() {
     this.setClasses();
     var image = this.model.get('img');
-    console.log(image);
     this.$el.css('background-image', 'url('+image+')');
     return this;
   },
+
+  swapHandler: function() {
+    App.Vent.trigger('piece:click', this);
+  },
+
+  activate: function() {
+    this.$el.addClass('active');
+  },
+
+  deactivate: function() {
+    this.$el.removeClass('active');
+  },
+
+  movePiece: function(model) {
+    this.setClasses();
+    this.deactivate();
+  }
 
 });
