@@ -26,14 +26,14 @@ h1, p {
 }
 
 #playerOne {
-	background-image: url(img/Xmas_Raptor_by_Mystra_Inc.jpg);
+	background-image: url(../img/Xmas_Raptor_by_Mystra_Inc.jpg);
 	background-size: 483px;
 	background-repeat: no-repeat;
 	background-position: 25% 99%;
 }
 
 #playerTwo {
-	background-image: url(img/humbug.jpg);
+	background-image: url(../img/humbug.jpg);
 	background-size: 450px;
 	background-repeat: no-repeat;
 	background-position: 50% 20%;
@@ -71,7 +71,7 @@ h1, p {
 #grid {
 	height: 100%;
 	width: 100%;
-	background-image: url(img/grid.png);
+	background-image: url(../img/grid.png);
 	background-size: 600px 600px;
 	background-repeat: no-repeat;
 }
