@@ -1,8 +1,8 @@
 App.AppView = Backbone.View.extend({
   initialize: function() {
     var pieces      = new App.Pieces();
-    var boardWidth  = 9;
-    var boardHeight = 9;
+    var boardWidth  = 8;
+    var boardHeight = 8;
 
     this.populateGrid(boardWidth, boardHeight, function(lat, lon) {
       var piece = new App.Piece({
