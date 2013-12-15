@@ -56,6 +56,9 @@ App.AppView = Backbone.View.extend({
         this.swapPieces[0].model.set(latLon1);
         this.swapPieces[1].model.set(latLon0);
       } else {
+        _.each(this.swapPieces, function(piece) {
+          piece.deactivate();
+        });
         alert('illegal move', latMove, lonMove);
       }
       this.swapPieces = [];
