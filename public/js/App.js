@@ -1,23 +1,26 @@
-window.App = App = Backbone.View.extend({
+App.Pieces = Backbone.Collection.extend({
+  model: App.Piece,
+  firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
   initialize: function() {
-    var Pack = new App.Piece();
-    var pack = new App.PieceView({model: Pack});
+    // this.listenTo('add', this, initPiece);
   }
-});
-
-App.Piece = Backbone.Model.extend({
+});;App.Piece = Backbone.Model.extend({
   packages: [
     {
       name: 'blue',
-      img: 'img/package-blue.png'
+      img: 'img/gift-icon1.png'
     },
     {
       name: 'red',
-      img: 'img/package-red.png'
+      img: 'img/gift-icon2.png'
     },
     {
       name: 'yellow',
-      img: 'img/package-yellow.png'
+      img: 'img/gift-icon3.png'
+    },
+    {
+      name: 'snowman',
+      img: 'img/gift-icon4.png'
     }
   ],
 
@@ -29,12 +32,29 @@ App.Piece = Backbone.Model.extend({
   }
 
 });
+;App.PieceView = Backbone.View.extend({
+  className: 'piece',
 
-App.PieceView = Backbone.View.extend({
   initialize: function() {
-    console.log(this.model);
-    console.log(this.model.get('name'), this.model.get('img'));
-  }
-});
+  },
 
-var app = new App();
+  setClasses: function() {
+    for(var i=0; i++; i<this.model.maxWidth) {
+      this.$el.removeClass('row'+i);
+    }
+    for(var i=0; i++; i<this.model.maxHeight) {
+      this.$el.removeClass('col'+i);
+    }
+    this.$el.addClass('row' + this.model.get('lat'));
+    this.$el.addClass('col' + this.model.get('lon'));
+  },
+
+  render: function() {
+    this.setClasses();
+    var image = this.model.get('img');
+    console.log(image);
+    this.$el.css('background-image', 'url('+image+')');
+    return this;
+  },
+
+});

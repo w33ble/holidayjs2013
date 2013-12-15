@@ -2,23 +2,36 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>PresentQuest®</title>
+	<title>PresentQuest</title>
 	<link rel="stylesheet" href="style/style.css" />
 </head>
 <body>
-	<h1>PresentQuest®</h1>
+	<p class="turnIndicator"><span id="playerName">Dino</span>'s Turn!</p>
 
-	<div id="playerOne">
-		<div class="grid"></div>
+	<h1>PresentQuest <span class="tagline">by The Raptors</span></h1>
+
+	<div id="playerOne" class="active">
+		<div class="score">Score:<span class="scoreNumber">0</span> </div>
 	</div>
+
+	<div id="board">
+		<div id="grid"></div>
+	</div>
+
 	<div id="playerTwo">
-		<div class="grid"></div>
+		<div class="score">Score:<span class="scoreNumber">0</span> </div>
 	</div>
 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/lodash/dist/lodash.underscore.js"></script>
   <script src="vendor/backbone/backbone-min.js"></script>
+  <!-- <script src="http://cdn.firebase.com/v0/firebase.js"></script>
+  <script src="vendor/backfire/backbone-firebase.min.js"></script> -->
+
+  <script>
+    window.App = App = {}
+  </script>
   <script src="js/App.js"></script>
-  <script src="js/maxcode.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
