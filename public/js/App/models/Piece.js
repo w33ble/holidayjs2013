@@ -18,11 +18,19 @@ App.Piece = Backbone.Model.extend({
     }
   ],
 
+  events: {
+    'click': 'handleClick'
+  },
+
   initialize: function() {
     // choose random package
     var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
     this.set('name', pack.name);
     this.set('img', pack.img);
+  },
+
+  handleClick: function(e) {
+    App.Vent.trigger('piece:click', this);
   }
 
 });
