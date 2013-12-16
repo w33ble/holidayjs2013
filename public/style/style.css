@@ -17,12 +17,16 @@ h1, p {
 	font-style: italic;
 }
 
-#playerOne, #playerTwo {
+.playerPic {
 	float: left;
 	width: 150px;
 	height: 600px;
 	background-color: white;
 	border: 3px solid white;
+}
+
+.playerPic.active{
+	border: 3px solid red;
 }
 
 #playerOne {
@@ -37,11 +41,6 @@ h1, p {
 	background-size: 450px;
 	background-repeat: no-repeat;
 	background-position: 50% 20%;
-}
-
-#playerOne.active,
-#playerTwo.active{
-	border: 3px solid red;
 }
 
 .turnIndicator {

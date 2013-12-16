@@ -1,13 +1,20 @@
 App.Vent = _.extend({}, Backbone.Events);
 
 App.AppView = Backbone.View.extend({
+  players: null,
+  playerViews: [],
   clickCount: 0,
   swapPieces: [],
+  turns: 0,
 
   initialize: function() {
+    var dinoPlayer  = new App.Player('One', 'Dino');
+    var birdPlayer  = new App.Player('Two', 'Bird');
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
+
+    this.setPlayers([dinoPlayer, birdPlayer]);
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
 
@@ -28,6 +35,31 @@ App.AppView = Backbone.View.extend({
       $('#grid').append(pieceView.render().el);
 
     });
+  },
+
+  setPlayers: function (players) {
+      this.players = new App.Players();
+      for (var i = 0; i < players.length; i++) {
+          var playerView = new App.PlayerView({
+              model: players[i]
+          });
+
+          this.playerViews.push(playerView);
+          this.players.add(players[i]);
+      }
+      // set the first players turn
+      this.playerViews[0].render();
+  },
+
+  nextTurn: function () {
+    var current;
+    this.turns++;
+    current = this.turns % 2;
+
+    // render the next player view
+    this.playerViews[current].render();
+
+    // TODO disable clicks if it's not the local player's turn
   },
 
   handleClick: function (pieceView) {
@@ -55,6 +87,11 @@ App.AppView = Backbone.View.extend({
       if ((latMove == 1 && lonMove == 0) || (latMove == 0 && lonMove == 1)) {
         this.swapPieces[0].model.set(latLon1);
         this.swapPieces[1].model.set(latLon0);
+
+        // TODO: check for points & animate
+
+        // next player's turn
+        this.nextTurn();
       } else {
         _.each(this.swapPieces, function(piece) {
           piece.deactivate();

@@ -34,6 +34,17 @@ App.Piece = Backbone.Model.extend({
   }
 
 });
+;App.Player = Backbone.Model.extend({
+	slot: null,
+	name: null,
+	score: null,
+
+	initialize: function(slot, name) {
+		this.slot = slot;
+		this.name = name;
+		this.score = 0;
+	}
+});
 ;App.Pieces = Backbone.Firebase.Collection.extend({
   model: App.Piece,
   // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
@@ -42,7 +53,16 @@ App.Piece = Backbone.Model.extend({
     this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
     // this.listenTo('add', this, initPiece);
   }
-});;App.PieceView = Backbone.View.extend({
+});;App.Players = Backbone.Firebase.Collection.extend({
+  model: App.Player,
+  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
+  initialize: function() {
+    var uuid4       = UUIDjs.create();
+    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
+    // this.listenTo('add', this, initPiece);
+  }
+});
+;App.PieceView = Backbone.View.extend({
   className: 'piece',
 
   events: {
@@ -88,4 +108,20 @@ App.Piece = Backbone.Model.extend({
     this.deactivate();
   }
 
+});
+;App.PlayerView = Backbone.View.extend({
+    el: '.turnIndicator .name',
+
+    render: function () {
+        // set name
+        this.$el.html(this.model.name); // should this be this.model.get('name') - because that doesn't work
+
+        // change border
+        $('.playerPic').removeClass('active');
+        $('#player' + this.model.slot).addClass('active'); // this.model.get('slot') ?
+
+        return this;
+    },
+
+    initialize: function () {}
 });
