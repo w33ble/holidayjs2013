@@ -35,6 +35,9 @@ App.AppView = Backbone.View.extend({
       $('#grid').append(pieceView.render().el);
 
     });
+
+    // start the game
+    $('.turnIndicator').show();
   },
 
   setupPlayers: function (players) {

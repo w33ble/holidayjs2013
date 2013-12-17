@@ -44,6 +44,7 @@ h1, p {
 }
 
 .turnIndicator {
+	display: none;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -74,8 +75,6 @@ h1, p {
 	background-size: 600px 600px;
 	background-repeat: no-repeat;
 }
-
-#grid img { position: absolute; }
 
 .piece {
 	width: 64px;
