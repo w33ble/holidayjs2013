@@ -8,13 +8,13 @@ App.AppView = Backbone.View.extend({
   turns: 0,
 
   initialize: function() {
-    var dinoPlayer  = new App.Player('One', 'Dino');
-    var birdPlayer  = new App.Player('Two', 'Bird');
+    var dinoPlayer  = new App.Player({name: 'Dino'});
+    var birdPlayer  = new App.Player({name: 'Bird'});
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
 
-    this.setPlayers([dinoPlayer, birdPlayer]);
+    this.setupPlayers([dinoPlayer, birdPlayer]);
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
 
@@ -37,15 +37,26 @@ App.AppView = Backbone.View.extend({
     });
   },
 
-  setPlayers: function (players) {
+  setupPlayers: function (players) {
+      var currentPlayer;
+
       this.players = new App.Players();
       for (var i = 0; i < players.length; i++) {
+          currentPlayer = players[i]; // cache
+
+          // set default fields on the player models
+          currentPlayer.set('slot', i);
+          currentPlayer.set('score', 0);
+
+          // set player view with the model
           var playerView = new App.PlayerView({
-              model: players[i]
+              model: currentPlayer
           });
 
           this.playerViews.push(playerView);
-          this.players.add(players[i]);
+
+          // add player to the collection
+          this.players.add(currentPlayer);
       }
       // set the first players turn
       this.playerViews[0].render();

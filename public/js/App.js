@@ -35,15 +35,6 @@ App.Piece = Backbone.Model.extend({
 
 });
 ;App.Player = Backbone.Model.extend({
-	slot: null,
-	name: null,
-	score: null,
-
-	initialize: function(slot, name) {
-		this.slot = slot;
-		this.name = name;
-		this.score = 0;
-	}
 });
 ;App.Pieces = Backbone.Firebase.Collection.extend({
   model: App.Piece,
@@ -114,11 +105,11 @@ App.Piece = Backbone.Model.extend({
 
     render: function () {
         // set name
-        this.$el.html(this.model.name); // should this be this.model.get('name') - because that doesn't work
+        this.$el.html(this.model.get('name'));
 
         // change border
         $('.playerPic').removeClass('active');
-        $('#player' + this.model.slot).addClass('active'); // this.model.get('slot') ?
+        $('#player' + this.model.get('slot')).addClass('active');
 
         return this;
     },

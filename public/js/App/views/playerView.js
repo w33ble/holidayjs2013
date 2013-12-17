@@ -3,11 +3,11 @@ App.PlayerView = Backbone.View.extend({
 
     render: function () {
         // set name
-        this.$el.html(this.model.name); // should this be this.model.get('name') - because that doesn't work
+        this.$el.html(this.model.get('name'));
 
         // change border
         $('.playerPic').removeClass('active');
-        $('#player' + this.model.slot).addClass('active'); // this.model.get('slot') ?
+        $('#player' + this.model.get('slot')).addClass('active');
 
         return this;
     },
