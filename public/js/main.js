@@ -50,6 +50,7 @@ App.AppView = Backbone.View.extend({
           // set default fields on the player models
           currentPlayer.set('slot', i);
           currentPlayer.set('score', 0);
+          currentPlayer.set('turn', 0);
 
           // set player view with the model
           var playerView = new App.PlayerView({
@@ -62,24 +63,22 @@ App.AppView = Backbone.View.extend({
           this.players.add(currentPlayer);
       }
       // set the first players turn
-      this.playerViews[0].updateTurn();
+      this.playerViews[0].model.set('turn', 1);
   },
 
   nextTurn: function () {
-    var currentIndex,
-        currentPlayer,
-        nextIndex;
+    var currentIndex = this.turns % 2,
+        currentPlayer = this.playerViews[currentIndex].model,
+        nextIndex = (this.turns + 1) % 2,
+        nextPlayer = this.playerViews[nextIndex].model;
 
     // update the current player's score
-    currentIndex = this.turns % 2;
-    currentPlayer = this.playerViews[currentIndex].model;
-    currentPlayer.set('score', currentPlayer.get('score') + 1); // is there an easier way to increment the fake score?
-    this.playerViews[currentIndex].updateScore();
+    currentPlayer.set('score', currentPlayer.get('score') + 1);
 
     // begin next player's turn
+    nextPlayer.set('turn', nextPlayer.get('turn') + 1);
+
     this.turns++;
-    nextIndex = this.turns % 2;
-    this.playerViews[nextIndex].updateTurn();
 
     // TODO disable clicks if it's not the local player's turn
   },
@@ -104,6 +103,7 @@ App.AppView = Backbone.View.extend({
         lon: this.swapPieces[1].model.get('lon')
       };
       // test for legal move
+      // TODO test that different types of pieces were clicked
       latMove = Math.abs(latLon0.lat-latLon1.lat);
       lonMove = Math.abs(latLon0.lon-latLon1.lon);
       if ((latMove == 1 && lonMove == 0) || (latMove == 0 && lonMove == 1)) {

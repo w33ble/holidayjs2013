@@ -34,8 +34,7 @@ App.Piece = Backbone.Model.extend({
   }
 
 });
-;App.Player = Backbone.Model.extend({
-});
+;App.Player = Backbone.Model.extend({});
 ;App.Pieces = Backbone.Firebase.Collection.extend({
   model: App.Piece,
   // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
@@ -120,7 +119,12 @@ App.Players = Backbone.Firebase.Collection.extend({
     },
 
     initialize: function () {
+        // set ui element attributes
         this.$el = $('#player' + this.model.get('slot'));
         this.$scoreContainer = this.$el.find('.score .scoreNumber');
+
+        // attach listeners
+        this.listenTo(this.model, 'change:score', this.updateScore);
+        this.listenTo(this.model, 'change:turn', this.updateTurn);
     }
 });

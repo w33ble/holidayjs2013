@@ -1,2 +1,1 @@
-App.Player = Backbone.Model.extend({
-});
+App.Player = Backbone.Model.extend({});

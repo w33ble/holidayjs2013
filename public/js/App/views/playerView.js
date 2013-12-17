@@ -17,7 +17,12 @@ App.PlayerView = Backbone.View.extend({
     },
 
     initialize: function () {
+        // set ui element attributes
         this.$el = $('#player' + this.model.get('slot'));
         this.$scoreContainer = this.$el.find('.score .scoreNumber');
+
+        // attach listeners
+        this.listenTo(this.model, 'change:score', this.updateScore);
+        this.listenTo(this.model, 'change:turn', this.updateTurn);
     }
 });
