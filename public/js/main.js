@@ -59,16 +59,24 @@ App.AppView = Backbone.View.extend({
           this.players.add(currentPlayer);
       }
       // set the first players turn
-      this.playerViews[0].render();
+      this.playerViews[0].updateTurn();
   },
 
   nextTurn: function () {
-    var current;
-    this.turns++;
-    current = this.turns % 2;
+    var currentIndex,
+        currentPlayer,
+        nextIndex;
 
-    // render the next player view
-    this.playerViews[current].render();
+    // update the current player's score
+    currentIndex = this.turns % 2;
+    currentPlayer = this.playerViews[currentIndex].model;
+    currentPlayer.set('score', currentPlayer.get('score') + 1); // is there an easier way to increment the fake score?
+    this.playerViews[currentIndex].updateScore();
+
+    // begin next player's turn
+    this.turns++;
+    nextIndex = this.turns % 2;
+    this.playerViews[nextIndex].updateTurn();
 
     // TODO disable clicks if it's not the local player's turn
   },

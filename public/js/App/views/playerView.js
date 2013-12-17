@@ -1,16 +1,23 @@
 App.PlayerView = Backbone.View.extend({
-    el: '.turnIndicator .name',
+    el: null,
+    $scoreContainer: null,
+    $nameContainer: $('.turnIndicator .name'),
 
-    render: function () {
+    updateScore: function () {
+        this.$scoreContainer.html(this.model.get('score'));
+    },
+
+    updateTurn: function () {
         // set name
-        this.$el.html(this.model.get('name'));
+        this.$nameContainer.html(this.model.get('name'));
 
         // change border
         $('.playerPic').removeClass('active');
-        $('#player' + this.model.get('slot')).addClass('active');
-
-        return this;
+        this.$el.addClass('active');
     },
 
-    initialize: function () {}
+    initialize: function () {
+        this.$el = $('#player' + this.model.get('slot'));
+        this.$scoreContainer = this.$el.find('.score .scoreNumber');
+    }
 });
