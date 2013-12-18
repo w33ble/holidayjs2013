@@ -38,9 +38,7 @@ App.Piece = Backbone.Model.extend({
   model: App.Piece,
   // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
   initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPiece);
+    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + App.gameInstance;
   }
 });;App.PieceView = Backbone.View.extend({
   className: 'piece',

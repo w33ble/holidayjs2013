@@ -1,10 +1,13 @@
 App.Vent = _.extend({}, Backbone.Events);
+App.gameInstance = '';
 
 App.AppView = Backbone.View.extend({
   clickCount: 0,
   swapPieces: [],
 
   initialize: function() {
+    this.createGame();
+
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
@@ -28,6 +31,14 @@ App.AppView = Backbone.View.extend({
       $('#grid').append(pieceView.render().el);
 
     });
+  },
+
+  createGame: function() {
+    // TODO: actually negotiate the game instance
+    // most likely using the Players collection to query Firebase for games
+    // with 1 user, and join any that exist, creating a new game if none do
+    var uuid4 = UUIDjs.create();
+    App.gameInstance = uuid4.toString();
   },
 
   handleClick: function (pieceView) {
