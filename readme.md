@@ -2,11 +2,17 @@
 
 Created for the [HolidayJS 2013](http://holidayjs.com/) hackathon.
 
-This is a hoiday themes PuzzleQuest clone with a classy holiday theme.
+This is a hoilday themes PuzzleQuest clone with a classy holiday theme.
 
 Built as a real-time, 2 player game using Backbone on the frontend and Firebase to have data and real-time goodness.
 
 At the time of presentaton, the app only drew the board and saved piece data to Firebase.
+
+## Installation
+
+Clone this repo, the `npm install` and `bower install`
+
+To run the app, simply run `node index`. It'll report what port it's listening on, so open localhost on that port in your browser.
 
 ## The Raptors
 
