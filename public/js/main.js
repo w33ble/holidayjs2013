@@ -1,4 +1,5 @@
 App.Vent = _.extend({}, Backbone.Events);
+App.firebaseUrl = 'https://holiday-js-hackathon-2013.firebaseio.com/'
 App.gameInstance = '';
 
 App.AppView = Backbone.View.extend({
@@ -38,7 +39,7 @@ App.AppView = Backbone.View.extend({
     // most likely using the Players collection to query Firebase for games
     // with 1 user, and join any that exist, creating a new game if none do
     var uuid4 = UUIDjs.create();
-    App.gameInstance = uuid4.toString();
+    App.gameInstance = uuid4.toString() + '/';
   },
 
   handleClick: function (pieceView) {
