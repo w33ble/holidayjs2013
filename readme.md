@@ -2,7 +2,7 @@
 
 Created for the [HolidayJS 2013](http://holidayjs.com/) hackathon.
 
-This is a hoilday themes PuzzleQuest clone with a classy holiday theme.
+This is a holiday themes PuzzleQuest clone with a classy holiday theme.
 
 Built as a real-time, 2 player game using Backbone on the frontend and Firebase to have data and real-time goodness.
 
