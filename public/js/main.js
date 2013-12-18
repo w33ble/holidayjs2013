@@ -1,5 +1,5 @@
 App.Vent = _.extend({}, Backbone.Events);
-App.firebaseUrl = 'https://holiday-js-hackathon-2013.firebaseio.com/'
+App.firebaseUrl = 'https://holiday-js-hackathon-2013.firebaseio.com/games/';
 App.gameInstance = '';
 
 App.AppView = Backbone.View.extend({
@@ -7,8 +7,20 @@ App.AppView = Backbone.View.extend({
   swapPieces: [],
 
   initialize: function() {
-    this.createGame();
+    var games = new App.Games();
 
+    this.listenToOnce(games, 'game:ready', this.setGameInstance);
+    // TODO: add event listener to Players, on add either create board or show waiting message
+  },
+
+  setGameInstance: function(game) {
+    App.gameInstance = game.id;
+    console.log('game is ' + App.gameInstance);
+    // TODO: add player to Players collection
+    this.createBoard();
+  },
+
+  createBoard: function() {
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
@@ -18,7 +30,7 @@ App.AppView = Backbone.View.extend({
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
 
-    this.populateGrid(boardWidth, boardHeight, function(lat, lon) {
+    this._populateGrid(boardWidth, boardHeight, function(lat, lon) {
       var piece = new App.Piece({
         lat: lat,
         lon: lon,
@@ -35,14 +47,6 @@ App.AppView = Backbone.View.extend({
       $('#grid').append(pieceView.render().el);
 
     });
-  },
-
-  createGame: function() {
-    // TODO: actually negotiate the game instance
-    // most likely using the Players collection to query Firebase for games
-    // with 1 user, and join any that exist, creating a new game if none do
-    var uuid4 = UUIDjs.create();
-    App.gameInstance = uuid4.toString() + '/';
   },
 
   handleClick: function (pieceView) {
@@ -89,7 +93,7 @@ App.AppView = Backbone.View.extend({
     this.clickCount++;
   },
 
-  populateGrid: function(lat, lon, cb) {
+  _populateGrid: function(lat, lon, cb) {
     for (var i = 0; i < lat; i++ ){
       for (var x = 0; x < lon; x++ ){
         var item = cb(i,x);
@@ -104,4 +108,4 @@ App.AppView = Backbone.View.extend({
 
 });
 
-var app = new App.AppView();
+new App.AppView();
