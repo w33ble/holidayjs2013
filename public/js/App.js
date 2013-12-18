@@ -1,6 +1,6 @@
 App.Game = Backbone.Model.extend({});
 ;App.Piece = Backbone.Model.extend({
-  packages: [
+  pieceTypes: [
     {
       name: 'blue',
       img: 'img/gift-icon1.png'
@@ -19,15 +19,13 @@ App.Game = Backbone.Model.extend({});
     }
   ],
 
-  events: {
-    'click': 'handleClick'
-  },
-
   initialize: function() {
-    // choose random package
-    var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
-    this.set('name', pack.name);
-    this.set('img', pack.img);
+    // new model, choose random piece
+    if (! this.id) {
+      var pack = this.pieceTypes[Math.floor(Math.random() * this.pieceTypes.length)];
+      this.set('name', pack.name);
+      this.set('img', pack.img);
+    }
   },
 });
 ;App.Games = Backbone.Firebase.Collection.extend({
@@ -43,13 +41,13 @@ App.Game = Backbone.Model.extend({});
       this.createGame();
       this.activeGame = this.at(this.length-1);
     } else {
-      games.each(_.bind(function(game) {
+      games.each(function(game) {
         var players = game.get('players');
         if (players == null || players.length < 2) {
           activeGame = game;
           this.activeGame = game;
         }
-      }, this));
+      }, this);
 
       if (! this.activeGame) {
         this.createGame();
