@@ -44,7 +44,7 @@ App.Piece = Backbone.Model.extend({
   model: App.Piece,
   // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
   initialize: function() {
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + App.gameInstance;
+    this.firebase = App.firebaseUrl + App.gameInstance + 'pieces/';
   }
 });;/* TODO: move UUID code to main.js */
 App.Players = Backbone.Firebase.Collection.extend({
