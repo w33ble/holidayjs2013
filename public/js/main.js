@@ -8,8 +8,8 @@ App.AppView = Backbone.View.extend({
   turns: 0,
 
   initialize: function() {
-    var dinoPlayer  = new App.Player({name: 'Dino'});
-    var birdPlayer  = new App.Player({name: 'Bird'});
+    var dinoPlayer  = new App.Player({slot: 0, name: 'Dino'});
+    var birdPlayer  = new App.Player({slot: 1, name: 'Bird'});
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
@@ -46,11 +46,6 @@ App.AppView = Backbone.View.extend({
       this.players = new App.Players();
       for (var i = 0; i < players.length; i++) {
           currentPlayer = players[i]; // cache
-
-          // set default fields on the player models
-          currentPlayer.set('slot', i);
-          currentPlayer.set('score', 0);
-          currentPlayer.set('turn', 0);
 
           // set player view with the model
           var playerView = new App.PlayerView({

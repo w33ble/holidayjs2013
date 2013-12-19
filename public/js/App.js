@@ -34,7 +34,12 @@ App.Piece = Backbone.Model.extend({
   }
 
 });
-;App.Player = Backbone.Model.extend({});
+;App.Player = Backbone.Model.extend({
+    defaults: {
+        score: 0,
+        turn: 0
+    }
+});
 ;App.Pieces = Backbone.Firebase.Collection.extend({
   model: App.Piece,
   // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
