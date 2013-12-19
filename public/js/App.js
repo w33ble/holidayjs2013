@@ -133,6 +133,10 @@ App.Players = Backbone.Firebase.Collection.extend({
     el: '.turnIndicator',
     turns: 0,
 
+    defaults: {
+        playerNames: ['Dino', 'Bird']
+    },
+
     nextTurn: function () {
         var currentIndex = this.turns % 2,
           currentPlayer = this.collection.at(currentIndex),
@@ -154,13 +158,13 @@ App.Players = Backbone.Firebase.Collection.extend({
     },
 
     initialize: function() {
-        var dinoPlayer = new App.Player({slot: 0, name: 'Dino'}); // not sure if this should be more abstract
-        var birdPlayer = new App.Player({slot: 1, name: 'Bird'});
-
-        // track a collection of players
         this.collection = new App.Players();
-        this.collection.add(dinoPlayer);
-        this.collection.add(birdPlayer);
+
+        // create player models and add to collection
+        _.each(this.defaults.playerNames, function (playerName, index) {
+            var player = new App.Player({slot: index, name: playerName})
+            this.collection.add(player);
+        }, this);
 
         // initialize player views
         this.collection.each(function (player) {
