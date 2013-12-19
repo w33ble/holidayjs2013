@@ -7,13 +7,20 @@ App.AppView = Backbone.View.extend({
   turns: 0,
 
   initialize: function() {
-    var dinoPlayer  = new App.Player({slot: 0, name: 'Dino'});
-    var birdPlayer  = new App.Player({slot: 1, name: 'Bird'});
+    var dinoPlayer = new App.Player({slot: 0, name: 'Dino'});
+    var birdPlayer = new App.Player({slot: 1, name: 'Bird'});
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
 
-    this.setupPlayers([dinoPlayer, birdPlayer]);
+    this.players = new App.Players();
+    this.players.add(dinoPlayer);
+    this.players.add(birdPlayer);
+
+    // initialize players
+    this.playersView = new App.PlayersView({
+        collection: this.players
+    });
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
 
@@ -37,24 +44,6 @@ App.AppView = Backbone.View.extend({
 
     // start the game
     $('.turnIndicator').show();
-  },
-
-  setupPlayers: function (players) {
-      var currentPlayer;
-
-      this.players = new App.Players();
-      for (var i = 0; i < players.length; i++) {
-          // add player to the collection
-          this.players.add(players[i]);
-
-          // set player view with the model
-          var playerView = new App.PlayerView({
-              model: this.players.at(i)
-          });
-      }
-      // set the first players turn
-      // this.playerViews[0].model.set('turn', 1);
-      this.players.at(0).set('turn', 1);
   },
 
   nextTurn: function () {
