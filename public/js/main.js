@@ -1,26 +1,16 @@
 App.Vent = _.extend({}, Backbone.Events);
 
 App.AppView = Backbone.View.extend({
-  players: null,
   clickCount: 0,
   swapPieces: [],
-  turns: 0,
 
   initialize: function() {
-    var dinoPlayer = new App.Player({slot: 0, name: 'Dino'});
-    var birdPlayer = new App.Player({slot: 1, name: 'Bird'});
     var pieces      = new App.Pieces();
     var boardWidth  = 8;
     var boardHeight = 8;
 
-    this.players = new App.Players();
-    this.players.add(dinoPlayer);
-    this.players.add(birdPlayer);
-
     // initialize players
-    this.playersView = new App.PlayersView({
-        collection: this.players
-    });
+    this.playersView = new App.PlayersView();
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
 
@@ -41,26 +31,6 @@ App.AppView = Backbone.View.extend({
       $('#grid').append(pieceView.render().el);
 
     });
-
-    // start the game
-    $('.turnIndicator').show();
-  },
-
-  nextTurn: function () {
-    var currentIndex = this.turns % 2,
-        currentPlayer = this.players.at(currentIndex),
-        nextIndex = (this.turns + 1) % 2,
-        nextPlayer = this.players.at(nextIndex)
-
-    this.turns++;
-
-    // update the current player's score
-    currentPlayer.set('score', currentPlayer.get('score') + 1);
-
-    // begin next player's turn
-    nextPlayer.set('turn', nextPlayer.get('turn') + 1);
-
-    // TODO disable clicks if it's not the local player's turn
   },
 
   handleClick: function (pieceView) {
@@ -93,7 +63,8 @@ App.AppView = Backbone.View.extend({
         // TODO: check for points & animate
 
         // next player's turn
-        this.nextTurn();
+        App.Vent.trigger('turns:change', this);
+
       } else {
         _.each(this.swapPieces, function(piece) {
           piece.deactivate();
