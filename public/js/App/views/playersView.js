@@ -1,19 +1,23 @@
 App.PlayersView = Backbone.View.extend({
+    el: '.turnIndicator',
     turns: 0,
 
     nextTurn: function () {
-      var currentIndex = this.turns % 2,
+        var currentIndex = this.turns % 2,
           currentPlayer = this.collection.at(currentIndex),
           nextIndex = (this.turns + 1) % 2,
           nextPlayer = this.collection.at(nextIndex)
 
-      this.turns++;
+        this.turns++;
 
-      // update the current player's score
-      currentPlayer.set('score', currentPlayer.get('score') + 1);
+        // update the current player's score
+        currentPlayer.set('score', currentPlayer.get('score') + 1);
 
-      // begin next player's turn
-      nextPlayer.set('turn', nextPlayer.get('turn') + 1);
+        // begin next player's turn
+        nextPlayer.set('turn', nextPlayer.get('turn') + 1);
+
+        // update name of who's turn it is
+        this.$el.find('.name').html(nextPlayer.get('name'));
 
       // TODO disable clicks if it's not the local player's turn
     },
@@ -37,7 +41,8 @@ App.PlayersView = Backbone.View.extend({
         this.listenTo(App.Vent, 'turns:change', this.nextTurn);
 
         // start the game
-        this.collection.at(0).set('turn', 1);
-        $('.turnIndicator').show();
+        this.$el.find('.name').html(this.collection.at(0).get('name')); // set player1 name
+        this.collection.at(0).set('turn', 1); // add turn to player1
+        this.$el.show(); // show the turn indicator
     }
 });
