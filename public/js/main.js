@@ -2,7 +2,6 @@ App.Vent = _.extend({}, Backbone.Events);
 
 App.AppView = Backbone.View.extend({
   players: null,
-  playerViews: [],
   clickCount: 0,
   swapPieces: [],
   turns: 0,
@@ -45,35 +44,32 @@ App.AppView = Backbone.View.extend({
 
       this.players = new App.Players();
       for (var i = 0; i < players.length; i++) {
-          currentPlayer = players[i]; // cache
+          // add player to the collection
+          this.players.add(players[i]);
 
           // set player view with the model
           var playerView = new App.PlayerView({
-              model: currentPlayer
+              model: this.players.at(i)
           });
-
-          this.playerViews.push(playerView);
-
-          // add player to the collection
-          this.players.add(currentPlayer);
       }
       // set the first players turn
-      this.playerViews[0].model.set('turn', 1);
+      // this.playerViews[0].model.set('turn', 1);
+      this.players.at(0).set('turn', 1);
   },
 
   nextTurn: function () {
     var currentIndex = this.turns % 2,
-        currentPlayer = this.playerViews[currentIndex].model,
+        currentPlayer = this.players.at(currentIndex),
         nextIndex = (this.turns + 1) % 2,
-        nextPlayer = this.playerViews[nextIndex].model;
+        nextPlayer = this.players.at(nextIndex)
+
+    this.turns++;
 
     // update the current player's score
     currentPlayer.set('score', currentPlayer.get('score') + 1);
 
     // begin next player's turn
     nextPlayer.set('turn', nextPlayer.get('turn') + 1);
-
-    this.turns++;
 
     // TODO disable clicks if it's not the local player's turn
   },
