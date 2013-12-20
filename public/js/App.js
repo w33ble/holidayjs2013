@@ -37,7 +37,7 @@ App.Piece = Backbone.Model.extend({
 ;App.Player = Backbone.Model.extend({
     defaults: {
         score: 0,
-        turn: 0
+        isMyTurn: false
     }
 });
 ;App.Pieces = Backbone.Firebase.Collection.extend({
@@ -115,8 +115,7 @@ App.Players = Backbone.Firebase.Collection.extend({
 
     updateTurn: function () {
         // change border
-        $('.playerPic').removeClass('active');
-        this.$el.addClass('active');
+        this.$el.toggleClass('active', this.model.get('isMyTurn'));
     },
 
     initialize: function () {
@@ -126,7 +125,7 @@ App.Players = Backbone.Firebase.Collection.extend({
 
         // attach listeners
         this.listenTo(this.model, 'change:score', this.updateScore);
-        this.listenTo(this.model, 'change:turn', this.updateTurn);
+        this.listenTo(this.model, 'change:isMyTurn', this.updateTurn);
     }
 });
 ;App.PlayersView = Backbone.View.extend({
@@ -145,13 +144,12 @@ App.Players = Backbone.Firebase.Collection.extend({
 
         this.turns++;
 
-        // update the current player's score
-        currentPlayer.set('score', currentPlayer.get('score') + 1);
+        // end current player's turn
+        currentPlayer.set('isMyTurn', false);
+        currentPlayer.set('score', currentPlayer.get('score') + 1); // TODO: this is mock scorekeeping
 
         // begin next player's turn
-        nextPlayer.set('turn', nextPlayer.get('turn') + 1);
-
-        // update name of who's turn it is
+        nextPlayer.set('isMyTurn', true);
         this.$el.find('.name').html(nextPlayer.get('name'));
 
       // TODO disable clicks if it's not the local player's turn
@@ -177,7 +175,7 @@ App.Players = Backbone.Firebase.Collection.extend({
 
         // start the game
         this.$el.find('.name').html(this.collection.at(0).get('name')); // set player1 name
-        this.collection.at(0).set('turn', 1); // add turn to player1
+        this.collection.at(0).set('isMyTurn', true); // start player1 turn
         this.$el.show(); // show the turn indicator
     }
 });

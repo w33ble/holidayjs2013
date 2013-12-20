@@ -8,8 +8,7 @@ App.PlayerView = Backbone.View.extend({
 
     updateTurn: function () {
         // change border
-        $('.playerPic').removeClass('active');
-        this.$el.addClass('active');
+        this.$el.toggleClass('active', this.model.get('isMyTurn'));
     },
 
     initialize: function () {
@@ -19,6 +18,6 @@ App.PlayerView = Backbone.View.extend({
 
         // attach listeners
         this.listenTo(this.model, 'change:score', this.updateScore);
-        this.listenTo(this.model, 'change:turn', this.updateTurn);
+        this.listenTo(this.model, 'change:isMyTurn', this.updateTurn);
     }
 });
