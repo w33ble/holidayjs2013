@@ -9,7 +9,7 @@ App.AppView = Backbone.View.extend({
   swapPieces:  [],
 
   initialize: function() {
-    this.gridView = $('#grid');
+    this.$gridView = $('#grid');
     var games = new App.Games();
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
@@ -37,7 +37,7 @@ App.AppView = Backbone.View.extend({
         model: piece
       });
 
-      this.gridView.append(pieceView.render().el);
+      this.$gridView.append(pieceView.render().el);
     }, this);
   },
 
