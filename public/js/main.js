@@ -1,33 +1,58 @@
 App.Vent = _.extend({}, Backbone.Events);
+App.firebaseUrl = 'https://holiday-js-hackathon-2013.firebaseio.com/games/';
+App.gameInstance = '';
 
 App.AppView = Backbone.View.extend({
-  clickCount: 0,
-  swapPieces: [],
+  boardWidth:  8,
+  boardHeight: 8,
+  clickCount:  0,
+  swapPieces:  [],
 
   initialize: function() {
-    var pieces      = new App.Pieces();
-    var boardWidth  = 8;
-    var boardHeight = 8;
+    this.$gridView = $('#grid');
+    var games = new App.Games();
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
+    this.listenToOnce(games, 'game:ready', this.setGameInstance);
+    // TODO: add event listener to Players, on add either create board or show waiting message
+  },
 
-    this.populateGrid(boardWidth, boardHeight, function(lat, lon) {
-      var piece = new App.Piece({
-        lat: lat,
-        lon: lon,
-        maxWidth: boardWidth,
-        maxHeight: boardHeight
-      });
+  setGameInstance: function(game) {
+    this.game = game;
+    App.gameInstance = game.id + '/';
+    // TODO: add player to Players collection
+    this.initBoard();
+  },
 
-      pieces.add(piece);
+  initBoard: function() {
+    // init pieces, fetches from Firebase automatically
+    var pieces = new App.Pieces();
 
+    if (pieces.length === 0) {
+      this._createBoard(pieces);
+    }
+
+    pieces.each(function(piece) {
       var pieceView = new App.PieceView({
         model: piece
       });
 
-      $('#grid').append(pieceView.render().el);
+      this.$gridView.append(pieceView.render().el);
+    }, this);
+  },
 
-    });
+  _createBoard: function(pieces) {
+    for (var lat = 0; lat < this.boardWidth; lat++ ){
+      for (var lon = 0; lon < this.boardHeight; lon++ ){
+        var piece = new App.Piece({
+          lat: lat,
+          lon: lon,
+          maxWidth: this.boardWidth,
+          maxHeight: this.boardHeight
+        });
+        pieces.add(piece);
+      }
+    }
   },
 
   handleClick: function (pieceView) {
@@ -65,21 +90,8 @@ App.AppView = Backbone.View.extend({
     }
 
     this.clickCount++;
-  },
-
-  populateGrid: function(lat, lon, cb) {
-    for (var i = 0; i < lat; i++ ){
-      for (var x = 0; x < lon; x++ ){
-        var item = cb(i,x);
-        if(!item){
-          continue;
-        }
-
-        return item;
-      }
-    }
   }
 
 });
 
-var app = new App.AppView();
+new App.AppView();

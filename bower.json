@@ -19,7 +19,6 @@
     "lodash": "~2.4.1",
     "jquery": "1.10",
     "PathFinding.js": "*",
-    "backfire": "~0.3.0",
-    "uuid-js": "~0.7.5"
+    "backfire": "~0.3.0"
   }
 }

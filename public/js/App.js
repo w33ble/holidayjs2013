@@ -1,5 +1,6 @@
-App.Piece = Backbone.Model.extend({
-  packages: [
+App.Game = Backbone.Model.extend({});
+;App.Piece = Backbone.Model.extend({
+  pieceTypes: [
     {
       name: 'blue',
       img: 'img/gift-icon1.png'
@@ -18,29 +19,52 @@ App.Piece = Backbone.Model.extend({
     }
   ],
 
-  events: {
-    'click': 'handleClick'
-  },
-
   initialize: function() {
-    // choose random package
-    var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
-    this.set('name', pack.name);
-    this.set('img', pack.img);
+    // new model, choose random piece
+    if (! this.id) {
+      var pack = this.pieceTypes[Math.floor(Math.random() * this.pieceTypes.length)];
+      this.set('name', pack.name);
+      this.set('img', pack.img);
+    }
   },
-
-  handleClick: function(e) {
-    App.Vent.trigger('piece:click', this);
-  }
-
 });
-;App.Pieces = Backbone.Firebase.Collection.extend({
-  model: App.Piece,
-  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
+;App.Games = Backbone.Firebase.Collection.extend({
+  model: App.Game,
   initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPiece);
+    this.firebase = App.firebaseUrl;
+    this.activeGame = false;
+    this.listenTo(this, 'sync', _.bind(this._triggerActiveGame, this));
+  },
+
+  _triggerActiveGame: function(games) {
+    if (games.length === 0) {
+      this.createGame();
+      this.activeGame = this.at(this.length-1);
+    } else {
+      games.each(function(game) {
+        var players = game.get('players');
+        if (players == null || players.length < 2) {
+          activeGame = game;
+          this.activeGame = game;
+        }
+      }, this);
+
+      if (! this.activeGame) {
+        this.createGame();
+        this.activeGame = this.at(this.length-1);
+      }
+    }
+
+    this.trigger('game:ready', this.activeGame);
+  },
+
+  createGame: function() {
+    this.push({});
+  }
+});;App.Pieces = Backbone.Firebase.Collection.extend({
+  model: App.Piece,
+  initialize: function() {
+    this.firebase = App.firebaseUrl + App.gameInstance + 'pieces/';
   }
 });;App.PieceView = Backbone.View.extend({
   className: 'piece',
