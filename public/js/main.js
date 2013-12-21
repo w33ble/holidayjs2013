@@ -14,21 +14,24 @@ App.AppView = Backbone.View.extend({
 
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
     this.listenToOnce(games, 'game:ready', this.setGameInstance);
+    this.listenToOnce(games, 'game:start', this.startGameInstance);
     // TODO: add event listener to Players, on add either create board or show waiting message
   },
 
   setGameInstance: function(game) {
     this.game = game;
     App.gameInstance = game.id + '/';
-    // TODO: add player to Players collection
     this.initBoard();
   },
 
-  initBoard: function() {
+  startGameInstance: function(game) {
+    // TODO: add player to Players collection
     // initialize players
-    var players = new App.Players();
+    this.players = new App.Players();
     var playersView = new App.PlayersView({ collection: players });
+  },
 
+  initBoard: function() {
     // init pieces, fetches from Firebase automatically
     var pieces = new App.Pieces();
 
