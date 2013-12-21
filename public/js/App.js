@@ -129,15 +129,6 @@ App.Game = Backbone.Model.extend({});
   el: null,
   $scoreContainer: null,
 
-  updateScore: function () {
-    this.$scoreContainer.html(this.model.get('score'));
-  },
-
-  updateTurn: function () {
-    // change border
-    this.$el.toggleClass('active', this.model.get('isMyTurn'));
-  },
-
   initialize: function () {
     // set ui element attributes
     this.$el = $('#player' + this.model.get('slot'));
@@ -146,6 +137,15 @@ App.Game = Backbone.Model.extend({});
     // attach listeners
     this.listenTo(this.model, 'change:score', this.updateScore);
     this.listenTo(this.model, 'change:isMyTurn', this.updateTurn);
+  },
+
+  updateScore: function (model) {
+    this.$scoreContainer.html(model.get('score'));
+  },
+
+  updateTurn: function (model) {
+    // change border
+    this.$el.toggleClass('active', model.get('isMyTurn'));
   }
 });
 ;App.PlayersView = Backbone.View.extend({
@@ -154,25 +154,6 @@ App.Game = Backbone.Model.extend({});
 
   defaults: {
     playerNames: ['Dino', 'Bird']
-  },
-
-  nextTurn: function () {
-    var currentIndex = this.turns % 2,
-      currentPlayer = this.collection.at(currentIndex),
-      nextIndex = (this.turns + 1) % 2,
-      nextPlayer = this.collection.at(nextIndex)
-
-    this.turns++;
-
-    // end current player's turn
-    currentPlayer.set('isMyTurn', false);
-    currentPlayer.set('score', currentPlayer.get('score') + 1); // TODO: this is mock scorekeeping
-
-    // begin next player's turn
-    nextPlayer.set('isMyTurn', true);
-    this.$el.find('.name').html(nextPlayer.get('name'));
-
-    // TODO disable clicks if it's not the local player's turn
   },
 
   initialize: function() {
@@ -197,5 +178,24 @@ App.Game = Backbone.Model.extend({});
     this.$el.find('.name').html(this.collection.at(0).get('name')); // set player1 name
     this.collection.at(0).set('isMyTurn', true); // start player1 turn
     this.$el.show(); // show the turn indicator
+  },
+
+  nextTurn: function () {
+    var currentIndex = this.turns % 2,
+      currentPlayer = this.collection.at(currentIndex),
+      nextIndex = (this.turns + 1) % 2,
+      nextPlayer = this.collection.at(nextIndex);
+
+    this.turns++;
+
+    // end current player's turn
+    currentPlayer.set('isMyTurn', false);
+    currentPlayer.set('score', currentPlayer.get('score') + 1); // TODO: this is mock scorekeeping
+
+    // begin next player's turn
+    nextPlayer.set('isMyTurn', true);
+    this.$el.find('.name').html(nextPlayer.get('name'));
+
+    // TODO disable clicks if it's not the local player's turn
   }
 });
