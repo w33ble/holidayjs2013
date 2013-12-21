@@ -157,13 +157,11 @@ App.Game = Backbone.Model.extend({});
   },
 
   initialize: function() {
-    this.collection = new App.Players();
-
     // create player models and add to collection
-    _.each(this.defaults.playerNames, function (playerName, index) {
-      var player = new App.Player({slot: index, name: playerName})
-      this.collection.add(player);
-    }, this);
+    // _.each(this.defaults.playerNames, function (playerName, index) {
+    //   var player = new App.Player({slot: index, name: playerName});
+    //   this.collection.add(player);
+    // }, this);
 
     // initialize player views
     this.collection.each(function (player) {
