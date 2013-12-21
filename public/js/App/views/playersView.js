@@ -7,12 +7,6 @@ App.PlayersView = Backbone.View.extend({
   },
 
   initialize: function() {
-    // create player models and add to collection
-    // _.each(this.defaults.playerNames, function (playerName, index) {
-    //   var player = new App.Player({slot: index, name: playerName});
-    //   this.collection.add(player);
-    // }, this);
-
     // initialize player views
     this.collection.each(function (player) {
       var playerView = new App.PlayerView({
@@ -38,7 +32,8 @@ App.PlayersView = Backbone.View.extend({
 
     // end current player's turn
     currentPlayer.set('isMyTurn', false);
-    currentPlayer.set('score', currentPlayer.get('score') + 1); // TODO: this is mock scorekeeping
+    // TODO: this is mock scorekeeping
+    currentPlayer.set('score', currentPlayer.get('score') + 1);
 
     // begin next player's turn
     nextPlayer.set('isMyTurn', true);
