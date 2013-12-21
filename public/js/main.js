@@ -26,9 +26,8 @@ App.AppView = Backbone.View.extend({
 
   initBoard: function() {
     // initialize players
-    this.playersView = new App.PlayersView();
-
-    this.listenTo(App.Vent, 'piece:click', this.handleClick);
+    var players = new App.Players();
+    var playersView = new App.PlayersView({ collection: players });
 
     // init pieces, fetches from Firebase automatically
     var pieces = new App.Pieces();
@@ -70,7 +69,7 @@ App.AppView = Backbone.View.extend({
       pieceView.activate();
     }
 
-    if(this.clickCount%2) { //second click, time to swap
+    if(this.swapPieces.length && this.clickCount%2) { //second click, time to swap
       latLon0 = {
         lat: this.swapPieces[0].model.get('lat'),
         lon: this.swapPieces[0].model.get('lon')
