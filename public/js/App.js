@@ -28,6 +28,12 @@ App.Game = Backbone.Model.extend({});
     }
   },
 });
+;App.Player = Backbone.Model.extend({
+  defaults: {
+    score: 0,
+    isMyTurn: false
+  }
+});
 ;App.Games = Backbone.Firebase.Collection.extend({
   model: App.Game,
   initialize: function() {
@@ -49,26 +55,27 @@ App.Game = Backbone.Model.extend({});
         }
       }, this);
 
-});
-;App.Player = Backbone.Model.extend({
-  defaults: {
-    score: 0,
-    isMyTurn: false
+      if (! this.activeGame) {
+        this.createGame();
+        this.activeGame = this.at(this.length-1);
+      }
+    }
+
+    this.trigger('game:ready', this.activeGame);
+  },
+
+  createGame: function() {
+    this.push({});
   }
-});
-;App.Pieces = Backbone.Firebase.Collection.extend({
+});;App.Pieces = Backbone.Firebase.Collection.extend({
   model: App.Piece,
   initialize: function() {
     this.firebase = App.firebaseUrl + App.gameInstance + 'pieces/';
   }
-});;/* TODO: move UUID code to main.js */
-App.Players = Backbone.Firebase.Collection.extend({
+});;App.Players = Backbone.Firebase.Collection.extend({
   model: App.Player,
-  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
   initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPlayer);
+    this.firebase = App.firebaseUrl + App.gameInstance + 'players/';
   }
 });
 ;App.PieceView = Backbone.View.extend({
