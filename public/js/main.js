@@ -65,7 +65,7 @@ App.AppView = Backbone.View.extend({
   handleClick: function (pieceView) {
     if (this.swapPieces.length && this.swapPieces[0].cid == pieceView.cid) {
       this.swapPieces = [];
-      --this.clickCount;
+      this.clickCount -= 2;
       pieceView.deactivate();
     } else {
       this.swapPieces.push(pieceView);
