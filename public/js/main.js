@@ -12,6 +12,9 @@ App.AppView = Backbone.View.extend({
     this.$gridView = $('#grid');
     var games = new App.Games();
 
+    // initialize players
+    this.playersView = new App.PlayersView();
+
     this.listenTo(App.Vent, 'piece:click', this.handleClick);
     this.listenToOnce(games, 'game:ready', this.setGameInstance);
     // TODO: add event listener to Players, on add either create board or show waiting message
@@ -75,11 +78,18 @@ App.AppView = Backbone.View.extend({
         lon: this.swapPieces[1].model.get('lon')
       };
       // test for legal move
+      // TODO test that different types of pieces were clicked
       latMove = Math.abs(latLon0.lat-latLon1.lat);
       lonMove = Math.abs(latLon0.lon-latLon1.lon);
       if ((latMove == 1 && lonMove == 0) || (latMove == 0 && lonMove == 1)) {
         this.swapPieces[0].model.set(latLon1);
         this.swapPieces[1].model.set(latLon0);
+
+        // TODO: check for points & animate
+
+        // next player's turn
+        App.Vent.trigger('turns:change', this);
+
       } else {
         _.each(this.swapPieces, function(piece) {
           piece.deactivate();
