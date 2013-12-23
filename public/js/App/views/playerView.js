@@ -2,15 +2,6 @@ App.PlayerView = Backbone.View.extend({
   el: null,
   $scoreContainer: null,
 
-  updateScore: function () {
-    this.$scoreContainer.html(this.model.get('score'));
-  },
-
-  updateTurn: function () {
-    // change border
-    this.$el.toggleClass('active', this.model.get('isMyTurn'));
-  },
-
   initialize: function () {
     // set ui element attributes
     this.$el = $('#player' + this.model.get('slot'));
@@ -19,5 +10,14 @@ App.PlayerView = Backbone.View.extend({
     // attach listeners
     this.listenTo(this.model, 'change:score', this.updateScore);
     this.listenTo(this.model, 'change:isMyTurn', this.updateTurn);
+  },
+
+  updateScore: function (model) {
+    this.$scoreContainer.html(model.get('score'));
+  },
+
+  updateTurn: function (model) {
+    // change border
+    this.$el.toggleClass('active', model.get('isMyTurn'));
   }
 });

@@ -1,5 +1,6 @@
-App.Piece = Backbone.Model.extend({
-  packages: [
+App.Game = Backbone.Model.extend({});
+;App.Piece = Backbone.Model.extend({
+  pieceTypes: [
     {
       name: 'blue',
       img: 'img/gift-icon1.png'
@@ -18,21 +19,14 @@ App.Piece = Backbone.Model.extend({
     }
   ],
 
-  events: {
-    'click': 'handleClick'
-  },
-
   initialize: function() {
-    // choose random package
-    var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
-    this.set('name', pack.name);
-    this.set('img', pack.img);
+    // new model, choose random piece
+    if (! this.id) {
+      var pack = this.pieceTypes[Math.floor(Math.random() * this.pieceTypes.length)];
+      this.set('name', pack.name);
+      this.set('img', pack.img);
+    }
   },
-
-  handleClick: function(e) {
-    App.Vent.trigger('piece:click', this);
-  }
-
 });
 ;App.Player = Backbone.Model.extend({
   defaults: {
@@ -40,22 +34,48 @@ App.Piece = Backbone.Model.extend({
     isMyTurn: false
   }
 });
-;App.Pieces = Backbone.Firebase.Collection.extend({
-  model: App.Piece,
-  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
+;App.Games = Backbone.Firebase.Collection.extend({
+  model: App.Game,
   initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPiece);
+    this.firebase = App.firebaseUrl;
+    this.activeGame = false;
+    this.listenTo(this, 'sync', _.bind(this._triggerActiveGame, this));
+  },
+
+  _triggerActiveGame: function(games) {
+    if (games.length === 0) {
+      this.createGame();
+      this.activeGame = this.at(this.length-1);
+    } else {
+      games.each(function(game) {
+        var players = game.get('players');
+        if (players == null || players.length < 2) {
+          activeGame = game;
+          this.activeGame = game;
+        }
+      }, this);
+
+      if (! this.activeGame) {
+        this.createGame();
+        this.activeGame = this.at(this.length-1);
+      }
+    }
+
+    this.trigger('game:ready', this.activeGame);
+  },
+
+  createGame: function() {
+    this.push({});
   }
-});;/* TODO: move UUID code to main.js */
-App.Players = Backbone.Firebase.Collection.extend({
-  model: App.Player,
-  // firebase: 'https://holiday-js-hackathon-2013.firebaseio.com/',
+});;App.Pieces = Backbone.Firebase.Collection.extend({
+  model: App.Piece,
   initialize: function() {
-    var uuid4       = UUIDjs.create();
-    this.firebase = 'https://holiday-js-hackathon-2013.firebaseio.com/' + uuid4.toString();
-    // this.listenTo('add', this, initPlayer);
+    this.firebase = App.firebaseUrl + App.gameInstance + 'pieces/';
+  }
+});;App.Players = Backbone.Firebase.Collection.extend({
+  model: App.Player,
+  initialize: function() {
+    this.firebase = App.firebaseUrl + App.gameInstance + 'players/';
   }
 });
 ;App.PieceView = Backbone.View.extend({
@@ -109,15 +129,6 @@ App.Players = Backbone.Firebase.Collection.extend({
   el: null,
   $scoreContainer: null,
 
-  updateScore: function () {
-    this.$scoreContainer.html(this.model.get('score'));
-  },
-
-  updateTurn: function () {
-    // change border
-    this.$el.toggleClass('active', this.model.get('isMyTurn'));
-  },
-
   initialize: function () {
     // set ui element attributes
     this.$el = $('#player' + this.model.get('slot'));
@@ -126,6 +137,15 @@ App.Players = Backbone.Firebase.Collection.extend({
     // attach listeners
     this.listenTo(this.model, 'change:score', this.updateScore);
     this.listenTo(this.model, 'change:isMyTurn', this.updateTurn);
+  },
+
+  updateScore: function (model) {
+    this.$scoreContainer.html(model.get('score'));
+  },
+
+  updateTurn: function (model) {
+    // change border
+    this.$el.toggleClass('active', model.get('isMyTurn'));
   }
 });
 ;App.PlayersView = Backbone.View.extend({
@@ -136,34 +156,7 @@ App.Players = Backbone.Firebase.Collection.extend({
     playerNames: ['Dino', 'Bird']
   },
 
-  nextTurn: function () {
-    var currentIndex = this.turns % 2,
-      currentPlayer = this.collection.at(currentIndex),
-      nextIndex = (this.turns + 1) % 2,
-      nextPlayer = this.collection.at(nextIndex)
-
-    this.turns++;
-
-    // end current player's turn
-    currentPlayer.set('isMyTurn', false);
-    currentPlayer.set('score', currentPlayer.get('score') + 1); // TODO: this is mock scorekeeping
-
-    // begin next player's turn
-    nextPlayer.set('isMyTurn', true);
-    this.$el.find('.name').html(nextPlayer.get('name'));
-
-    // TODO disable clicks if it's not the local player's turn
-  },
-
   initialize: function() {
-    this.collection = new App.Players();
-
-    // create player models and add to collection
-    _.each(this.defaults.playerNames, function (playerName, index) {
-      var player = new App.Player({slot: index, name: playerName})
-      this.collection.add(player);
-    }, this);
-
     // initialize player views
     this.collection.each(function (player) {
       var playerView = new App.PlayerView({
@@ -177,5 +170,25 @@ App.Players = Backbone.Firebase.Collection.extend({
     this.$el.find('.name').html(this.collection.at(0).get('name')); // set player1 name
     this.collection.at(0).set('isMyTurn', true); // start player1 turn
     this.$el.show(); // show the turn indicator
+  },
+
+  nextTurn: function () {
+    var currentIndex = this.turns % 2,
+      currentPlayer = this.collection.at(currentIndex),
+      nextIndex = (this.turns + 1) % 2,
+      nextPlayer = this.collection.at(nextIndex);
+
+    this.turns++;
+
+    // end current player's turn
+    currentPlayer.set('isMyTurn', false);
+    // TODO: this is mock scorekeeping
+    currentPlayer.set('score', currentPlayer.get('score') + 1);
+
+    // begin next player's turn
+    nextPlayer.set('isMyTurn', true);
+    this.$el.find('.name').html(nextPlayer.get('name'));
+
+    // TODO disable clicks if it's not the local player's turn
   }
 });

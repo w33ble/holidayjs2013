@@ -1,5 +1,5 @@
 App.Piece = Backbone.Model.extend({
-  packages: [
+  pieceTypes: [
     {
       name: 'blue',
       img: 'img/gift-icon1.png'
@@ -18,19 +18,12 @@ App.Piece = Backbone.Model.extend({
     }
   ],
 
-  events: {
-    'click': 'handleClick'
-  },
-
   initialize: function() {
-    // choose random package
-    var pack = this.packages[Math.floor(Math.random() * this.packages.length)];
-    this.set('name', pack.name);
-    this.set('img', pack.img);
+    // new model, choose random piece
+    if (! this.id) {
+      var pack = this.pieceTypes[Math.floor(Math.random() * this.pieceTypes.length)];
+      this.set('name', pack.name);
+      this.set('img', pack.img);
+    }
   },
-
-  handleClick: function(e) {
-    App.Vent.trigger('piece:click', this);
-  }
-
 });
